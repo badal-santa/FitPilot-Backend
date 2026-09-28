@@ -10,7 +10,19 @@
 	"observability": {
 		"enabled": true
 	},
-	"upload_source_maps": true
+	"upload_source_maps": true,
+	// Listen on all interfaces so phones/emulators on the LAN can reach the dev server.
+	"dev": {
+		"ip": "0.0.0.0",
+		"port": 8787
+	},
+	"d1_databases": [
+		{
+			"binding": "fitpilot_db",
+			"database_name": "fitpilot-db",
+			"database_id": "79a56db0-a2cc-498d-b1e9-5c28c4b5e066"
+		}
+	]
 	/**
 	 * Smart Placement
 	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
