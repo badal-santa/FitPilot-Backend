@@ -67,7 +67,7 @@ export const openApiSpec = {
 		description: "FitPilot backend running on Cloudflare Workers + D1.",
 	},
 	// Relative, so "Try it out" calls whichever host is serving /docs.
-	servers: [{ url: "/" }],
+	servers: [{ url: "/v1" }],
 	tags: [
 		{ name: "System", description: "Health and diagnostics" },
 		{ name: "Auth", description: "Registration, login and sessions" },

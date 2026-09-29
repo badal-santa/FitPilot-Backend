@@ -15,8 +15,12 @@ export interface Env {
 	GOOGLE_CLIENT_IDS?: string;
 }
 
+// Every API route is served under this prefix, e.g. /v1/auth/login.
+const API_PREFIX = "/v1";
+
 // Each router owns one area of the API; see src/routers/ for its paths.
-const route = combineRouters(
+// Router paths are written without API_PREFIX; fetch() strips it first.
+const apiRoute = combineRouters(
 	systemRouter,
 	authRouter,
 	profileRouter,
@@ -41,11 +45,22 @@ export default {
 			});
 		}
 
-		const response = await route(
-			request,
-			env,
-			new URL(request.url),
-		);
+		const url = new URL(request.url);
+
+		let response: Response | null;
+
+		if (
+			url.pathname === API_PREFIX ||
+			url.pathname.startsWith(`${API_PREFIX}/`)
+		) {
+			url.pathname =
+				url.pathname.slice(API_PREFIX.length) || "/";
+
+			response = await apiRoute(request, env, url);
+		} else {
+			// Unprefixed: only /, /health, /docs and /openapi.json.
+			response = await systemRouter(request, env, url);
+		}
 
 		return response ?? json(
 			{
